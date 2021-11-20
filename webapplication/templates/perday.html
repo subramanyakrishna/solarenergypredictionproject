@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" href="static\world.png" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description"
+    content="Solar energy output prediction at particular area with machine learning The total solar energy output at current hour is">
+  </meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Solar Energy Output Prediction</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/perday.css') }}">
+  </link>
+
+</head>
+
+<body>
+  <nav style="background-color:#001531;">
+    <div class="nav-wrapper">
+      <a href="https://solaroutputprediction.herokuapp.com/" class="brand-logo left">Solar Energy Output Prediction</a>
+      <ul id="nav-mobile" class="right">
+        <li>
+
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div style="width:100%; text-align: center; margin-top: 100px; font-weight: 500; font-size: xx-large; color:#001531;"
+    id='loadingDiv'>
+    Data is being
+    generated</div>
+  <div class="spin" id='spin'></div>
+
+  <div id="results" style="padding: 20px; display:none;">
+    <h5 class="editsize"><u><b>Energy savings and Plots &#x26A1;</b></u></h5>
+    <p> Below prediction are based on the assumption that, Total module Area: 36646.94 m<sup>2</sup>, Module tilt:
+      20<sup>&#xb0;</sup>, Module orientation: 3-up landscape, Array Azimuth: 180<sup>&#xb0;</sup></p>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td>The total solar energy output at current hour </td>
+          <!-- {{currTimeprediction}} kW -->
+          <td><b id='currTimeprediction'>kW</b></td>
+        </tr>
+        <tr>
+          <td>The total solar energy output per day </td>
+          <!-- {{solarOutputPerDay}} kW -->
+          <td><b id='solarOutputPerDay'> </b></td>
+        </tr>
+        <tr>
+          <td>Average solar energy per hour </td>
+          <!-- {{averageSolarEnergyPerHour}} kWh -->
+          <td><b id='averageSolarEnergyPerHour'></b></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="width: 100%;" id="parentChart">
+      <h6 style="text-align: center;">
+        The solar energy produced at different hours in a selected date(<b id='endDate'>{{endDate}}</b>) is plotted
+        below
+      </h6>
+
+      <br>
+      <canvas id="lineChartPerDay">
+      </canvas>
+      <h6 style="text-align: center;">
+        The solar energy produced 30 days before from the selected date(<b id='endDate'>{{endDate}}</b>)
+      </h6>
+      <span id="loading" style="color:#084fac; text-align: center; margin: 0 auto;">Please wait while the plot is being
+        generated..... </span>
+      <br>
+      <canvas id="lineChartPerMonth">
+      </canvas>
+    </div>
+    <br>
+    <h5 class="editsize"><u><b>Solar Forecasting based on given Historical data ☀️</b></u></h5>
+    <br>
+    <div class="row">
+      <div class="input-field col s12 l8">
+        <input id="forCastInputs" class="active" type="text" name="forCastInputs" value="" oninput="removeError()"
+          placeholder="Ex:1234.02 2178.45 5164.8 8916.76 1634.02 2124.40 2754.90 2134.46 1354.87 2451.67" />
+        <label for="forCastInputs">Please enter solar power generated 10 consecutive days with space inbetween in kW
+        </label>
+        <span id="errorForcast"></span>
+      </div>
+      <button type="submit" class="btn" onclick="onForecastValueSubmit()"
+        style="background-color:#001531">submit</button>
+
+    </div>
+    <div style="display: none; width: 100%;" id="parentChartForeCast">
+
+      <br>
+      <canvas id="lineChartForCast">
+      </canvas>
+    </div>
+    <br>
+    <h5 class="editsize"><u><b>Cost Analysis &#128176;</b></u></h5>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td>Average cost of Electricity per unit KWh </td>
+          <td><b>₹5.43</b></td>
+        </tr>
+        <tr>
+          <td>Average cost savings </td>
+          <!-- ₹ {{costsavings}} per hour -->
+          <td><b id='costsavings'>₹ {{costsavings}} per hour</b></td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <h5 class="editsize"><u><b>Environmental Impact &#127794;</b></u></h5>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td>Total carbon emission due to Combustion of Natural gas</td>
+          <td><b>0.185 kg/KWh</b></td>
+        </tr>
+        <tr>
+          <td>No of trees required to absorb the co2 released by using fossil fuel</td>
+          <!-- {{co2NoOfTree}} -->
+          <td><b id='co2NoOfTree'></b></td>
+        </tr>
+
+        <tr>
+          <td>Total carbon emission that can be reduced </td>
+          <!-- {{co2}} kg -->
+          <td><b id='co2'></b></td>
+        </tr>
+      </tbody>
+    </table>
+    <h5 class="editsize"><u><b>Government Incentives & Schemes &#128221;</b></u></h5>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td> Solar Schemes by Ministry of new and renewable energy </td>
+          <td><b><a target="_blank" href="https://mnre.gov.in/solar/schemes"><small>(click here)</small></a></b></td>
+        </tr>
+
+      </tbody>
+    </table>
+    <br>
+    <h5 class="editsize"><u><b>Approximate Installation Size &#128207;</b></u></h5>
+    <br>
+    <div class="row">
+      <div class="input-field col s12 l6">
+        <input id="electrocityUnit" class="active" type="text" name="electrocityUnit" value=""
+          oninput="onElectricityUnitChange()" placeholder="Ex:154" />
+        <label for="electrocityUnit">Please enter average electricity consumption in units/KWh</label>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12 l6">
+        <input id="electrocityUnitAns" class="active" type="text" name="electrocityUnitAns" value="0" />
+        <label for="electrocityUnitAns">Approximate Total Area to satisfy power needs in m2 </label>
+      </div>
+    </div>
+    <br>
+    <h5 class="editsize"><u><b>Ready to get Started &#10067;</b></u></h5>
+    <p>Find a solar provider in your area to get more information and begin discussing installation</p>
+    <table>
+      <tbody>
+        <tr>
+          <!-- {{city_name}} -->
+          <td>Nearest services for solar panel installation in <b id='city_name'></b> </td>
+          <td>
+            <b><a id="nearServiceAnchor" target="_blank" href=""><small>(click here to go services
+                  website)</small></a></b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="download_csv_file()"> Download CSV </button>
+    <br>
+
+
+  </div>
+  </div>
+  <script src="{{ url_for('static', filename='javascript/perday.js')}}"></script>
+  <script>
+    function removeError() {
+      let error = document.getElementById('errorForcast')
+      error.innerHTML = ''
+    }
+
+    function onForecastValueSubmit() {
+      removeError()
+      let forCastElement = document.getElementById('forCastInputs')
+      let forCastValueString = forCastElement.value.trim()
+      let forCastedValueSplittedToStrings = forCastValueString.split(/\s+/)
+      console.log('forCastedValueSplittedToStrings', forCastedValueSplittedToStrings)
+      let forCastedValueInFloat = forCastedValueSplittedToStrings.map((str) => Number(str))
+      console.log('forCastedValueInFloat', forCastedValueInFloat)
+      let error = document.getElementById('errorForcast')
+      if (forCastedValueInFloat.length != 10) {
+        error.innerHTML = `Please input solar energy produced in 10 days only,You have given ${forCastedValueInFloat.length} days value`;
+        error.style.color = "red";
+      }
+      else {
+        plotTheForeCast(forCastedValueInFloat)
+      }
+
+    }
+
+    function plotTheForeCast(forCastedValueInFloat) {
+      fetch('https://flaskforecast.herokuapp.com/getForecast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'tenDaysOutputs': forCastedValueInFloat
+        })
+      }).then(data => data.json()).then((data) => {
+        let next3DaysOutput = data['next3DaysOutput']
+        let parentChartForeCast = document.getElementById('parentChartForeCast')
+        parentChartForeCast.style.display = 'flex'
+        lineChartJsForDay(['Day 11', 'Day 12', 'Day 13'], next3DaysOutput, 'Days', 'Solar Energy per day', 'Solar Energy Forecast', 'lineChartForCast', () => {
+          document.querySelector("#lineChartForCast").remove();
+          var link = document.createElement("canvas");
+          link.id = "lineChartForCast";
+          document.querySelector("#parentChartForeCast").appendChild(link);
+          canvas = document.querySelector("#lineChartForCast");
+          ctx = canvas.getContext("2d");
+        })
+
+      }).catch((err) => {
+        console.log(err);
+        let error = document.getElementById('errorForcast')
+        error.innerHTML = `Error while getting forecast data`;
+        error.style.color = "red";
+      })
+    }
+
+    function lineChartJsForDay(xValues, yValues, xLabel, yLabel, chartLabel, id, callback = () => { }) {
+      callback()
+      var ctx = document.getElementById(id).getContext("2d");
+      ctx.innerHTML = "loading";
+      Chart.defaults.font.size = 15;
+      var lineChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: xValues,
+          datasets: [
+            {
+              label: chartLabel,
+              data: yValues,
+              fill: false,
+              borderColor: "rgb(75,193,192)",
+              lineTension: 0,
+              pointRadius: 0,
+              hoverPointRadius: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            intersect: false,
+            axis: "x",
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: yLabel,
+                color: "rgb(75,192,192)",
+                align: "center",
+              },
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: xLabel,
+                color: "rgb(75,192,192)",
+                align: "center",
+              },
+              grid: {
+                display: false
+              }
+            },
+          },
+        },
+      });
+    }
+
+
+
+    const setDatavalue = (nameOfData, dataValue) => {
+      let dataHTML = document.getElementById(nameOfData);
+      dataHTML.innerHTML = dataValue
+    }
+
+    url = "/result?lat={{lat}}&long={{long}}&endDate={{endDate}}"
+    fetch(url).then((data) => data.json()).then((data) => {
+      console.log(data)
+      let results = document.getElementById('results')
+      let loadingDiv = document.getElementById('loadingDiv')
+      let spin = document.getElementById('spin')
+      loadingDiv.style['display'] = 'none'
+      spin.style['display'] = 'none'
+      results.style["display"] = "block"
+      const data_type_array = ['currTimeprediction', 'solarOutputPerDay', 'averageSolarEnergyPerHour', 'costsavings', 'co2NoOfTree', 'co2', 'city_name']
+      data_type_array.forEach((data_type) => {
+        console.log(data_type, data[data_type])
+        setDatavalue(data_type, data[data_type])
+      })
+
+      document.getElementById("nearServiceAnchor").href = `https://dir.indiamart.com/search.mp?ss=solar+panel+installation&cq=${data['city_name']}`;
+      time = ['12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM',
+        '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM',]
+
+      lineChartJsForDay(time, data['solarOutputPerhours'], "hours in a day", "Solar Energy Per hour", "Solar Energy output per hour", 'lineChartPerDay');
+      const downLoadDataTypeArray = ['currTimeprediction', 'city_name', 'co2', 'costsavings', 'averageSolarEnergyPerHour', 'solarOutputPerDay']
+      downLoadDataTypeArray.forEach((data_type) => {
+        console.log(data_type, data[data_type])
+        setLocalStrorage(data_type, data[data_type])
+      })
+    }).catch((err) => console.log(err))
+
+
+
+    function setLocalStrorage(data_type, data) {
+      localStorage.setItem(data_type, data.toString())
+    }
+    function getLocalStorage(data_type) {
+      return localStorage.getItem(data_type)
+    }
+    function download_csv_file() {
+      const data = [];
+      const downLoadDataTypeArray = ['currTimeprediction', 'city_name', 'co2', 'costsavings', 'averageSolarEnergyPerHour', 'solarOutputPerDay']
+      downLoadDataTypeArray.forEach((data_type) => {
+        console.log(data_type, data[data_type])
+        data[data_type] = getLocalStorage(data_type)
+      })
+      var csvFileData = [
+        ['The total solar energy output at current hour', `${data['currTimeprediction']} kw`],
+        ['The total solar energy output per day ', `${data['solarOutputPerDay']} `],
+        ['Average solar energy per hour ', `${data['averageSolarEnergyPerHour']} `],
+        ['Average cost savings', `Rs ${data['costsavings']}`],
+        ['Total carbon emission due to Combustion of Natural gas', '0.185 kg/KWh'],
+        ['Total carbon emission that can be reduced', `${data['co2']}`],
+        [`Nearest services for solar panel installation in ${data['city_name']}`, `https://dir.indiamart.com/search.mp?ss=solar+panel+installation&cq=${data['city_name']}`],
+        ['Government Incentives & Schemes', 'https://mnre.gov.in/solar/schemes']
+      ];
+      //define the heading for each row of the data  
+      var csv = 'Analysis,Results\n';
+
+      //merge the data with CSV  
+      csvFileData.forEach((row) => {
+        csv += row.join(',');
+        csv += "\n";
+      });
+
+
+
+      var hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      hiddenElement.target = '_blank';
+
+      //provide the name for the CSV file to be downloaded
+      hiddenElement.download = 'solarEnergyData.csv';
+      hiddenElement.click();
+    }
+
+    Chart.defaults.font.size = 15;
+
+    fetch("/monthly?lat={{lat}}&long={{long}}&endDate={{endDate}}").then((data) => data.json()).then((data) => {
+      var result = []
+      var dates = []
+      console.log(data);
+      result = data["result"];
+      dates = data["dates"]
+      console.log(result)
+      console.log(dates)
+      document.getElementById("loading").innerHTML = ""
+      lineChartJsForDay(dates, result, 'Dates', 'Solar Energy per day', 'Solar Energy output per day', 'lineChartPerMonth', () => {
+        document.querySelector("#lineChartPerMonth").remove();
+        var link = document.createElement("canvas");
+        link.id = "lineChartPerMonth";
+        document.querySelector("#parentChart").appendChild(link);
+        canvas = document.querySelector("#lineChartPerMonth");
+        ctx = canvas.getContext("2d");
+      })
+      let forCastedValueInFloat = result.slice(0, 10).map((num) => Number(num))
+      document.getElementById('forCastInputs').value = forCastedValueInFloat.join(" ")
+      plotTheForeCast(forCastedValueInFloat)
+    })
+
+  </script>
+  <script>
+    function onElectricityUnitChange() {
+      var electrocityUnit = document.getElementById("electrocityUnit").value;
+      console.log(electrocityUnit)
+      let area = electrocityUnit / 225
+      document.getElementById("electrocityUnitAns").value = area.toFixed(2)
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+</body>
+
+</html>

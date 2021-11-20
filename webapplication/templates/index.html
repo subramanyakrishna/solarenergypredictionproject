@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" href="static\world.png" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Solar energy output prediction at particular area with machine learning">
+  </meta>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/index.css') }}" />
+  <title>Solar Energy Output Prediction</title>
+</head>
+
+<body>
+  <nav style="background-color:#001531;">
+    <div class="nav-wrapper">
+      <a href="https://solaroutputprediction.herokuapp.com/" class="brand-logo left">Solar Energy Output Prediction</a>
+      <ul id="nav-mobile" class="right">
+        <li>
+
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div style="padding: 20px">
+    <div class="row">
+      <div class="input-field col s12 l6">
+        <input id="citytofocus" class="active" type="text" name="citytofocus" value="" placeholder="Ex:Bangalore" />
+        <label for="citytofocus">Please select your nearby city name to focus near your required coodinate</label>
+        <span id="spanCity"></span>
+      </div>
+      <button type="submit" class="btn" onclick="onfocusSubmit()" style="background-color:#001531">focus</button>
+    </div>
+    <div class="row s12" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+      <div id="mapid" class="map"
+        style="height: 20rem; width: 50%; border-radius: 1rem; border-width: 0.5rem; box-shadow: 0 0 10px rgba(0,0,0,.1), 10px 10px 10px rgba(0,0,0,.3);">
+      </div>
+
+    </div>
+    <form class="col s12" method="POST" action="{{url_for('home')}}">
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <input id="lat" class="active" type="text" name="lat" value="12.9410" />
+          <label for="lat">latitude</label>
+        </div>
+        <div class="input-field col s12 l6">
+          <input id="long" class="active" type="text" name="long" value="77.5655" />
+          <label for="long">longitude </label>
+        </div>
+        <div class="row">
+          <div class="input-field col s12 l6" style="margin-left: 10px;">
+            <input type="date" id="endDate" name="endDate" min="1980-01-01" onchange="checkDate()">
+            <label for="endDate">date</label>
+            <span id="errorDate"></span>
+          </div>
+        </div>
+
+        <div class="row" style="display: flex; justify-content: center; align-items: center;">
+          <input type="submit" class="btn" value="calculate" style="background-color:#001531"></input>
+        </div>
+    </form>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="{{ url_for('static', filename='javascript/index.js')}}" charset="utf-8"></script>
+  <script>
+    var mymap = L.map('mapid').setView([12.9410, 77.5655], 3)
+    L.tileLayer(
+      'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoieWlnaXZpZzI3MSIsImEiOiJja280OTI1cnIxZ3RvMnVrNG15aTM5eGdjIn0.ZRLwuZP99t0vLx2pE5nQxw', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1IjoieWlnaXZpZzI3MSIsImEiOiJja280OTI1cnIxZ3RvMnVrNG15aTM5eGdjIn0.ZRLwuZP99t0vLx2pE5nQxw'
+    }).addTo(mymap);
+
+    var popup = L.popup();
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent(e.latlng.toString())
+        .openOn(mymap);
+      var lat = e.latlng.lat.toFixed(4)
+      var long = e.latlng.lng.toFixed(4)
+      var latinput = document.getElementById('lat');
+      var longinput = document.getElementById("long");
+      latinput.value = lat;
+      longinput.value = long;
+    }
+
+    mymap.on('click', onMapClick);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+@media only screen and (max-width: 700px) {
+  #mapid {
+    width: 100% !important;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .brand-logo {
+    font-size: medium !important;
+    overflow-wrap: break-word;
+  }
+  #citytofocus {
+    margin: 13px 0 1px 0;
+  }
+}

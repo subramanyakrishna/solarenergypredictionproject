@@ -1,0 +1,109 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+body {
+  background-color: #ffffff !important;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td {
+  width: 50%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+#lineChartPerMonth {
+  margin: 0 auto !important;
+}
+#lineChartPerMonth,
+#lineChartPerDay,
+#lineChartForCast {
+  border: 1.7px solid #dddddd;
+  width: 70% !important;
+  height: 70% !important;
+  margin: 0 auto !important;
+}
+#parentChart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.spin {
+  margin-top: 50vh;
+}
+
+@keyframes spinner {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+.spin::before {
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 5px #b3b4b4;
+  border-bottom-color: #1c87c9;
+  border-radius: 50%;
+  content: "";
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
+.spinSmall {
+  margin-top: 50vh;
+}
+
+.spinSmaller::before {
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 5px #b3b4b4;
+  border-bottom-color: #1c87c9;
+  border-radius: 50%;
+  content: "";
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
+#parentChartForeCast {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+@media only screen and (max-width: 600px) {
+  #lineChartPerMonth,
+  #lineChartPerDay {
+    width: 100% !important;
+  }
+  .brand-logo {
+    font-size: medium !important;
+    overflow-wrap: break-word;
+  }
+  .editsize {
+    font-size: medium;
+  }
+  td {
+    width: 60%;
+  }
+}
