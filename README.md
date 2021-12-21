@@ -61,8 +61,41 @@ data which can be helpful.
 solar energy values.
 * We use LSTM i.e., Long short term memory. It is a type of RNN but
 it solves many drawbacks which RNN has.
+## Application Development
+* We developed a web application to help the user to utilize our
+machine learning model and predict the total solar energy generation
+at a particular location, if they want to set up a solar energy plant.
+* Web application is deployed on Heroku: Cloud Application Platform
+#### Data Collection using API
+* Weatherbit: Weatherbit API is used to retrieve current weather
+observations from over 47,000 live weather stations. We provide the
+city name, from which the latitude and longitude is retrieved and used
+in the API, and the API provides the weather information required.
+* Opentopodata: It is an elevation API, which is used for the
+“Altimeter” feature.The elevation is provided using the city name or
+the latitude and longitude.
+* Timezonedb: To get time in given latitude and longitude.
+* Opencagedata: The OpenCage Geocoding API provides reverse
+(lat/long to text) and forward (text to lat/long) geocoding via a
+RESTful API.
+#### Backend Functional Process Charts:
+##### Backend Process Chart:
+![Backend Process Chart](https://user-images.githubusercontent.com/64394655/146876197-bfd299f0-6e7c-4340-a71d-18a047e3a4d4.png)
+##### Flow Chart of hourly prediction:
+![Flow Chart of hourly prediction](https://user-images.githubusercontent.com/64394655/146876309-c42a626d-44d2-4a9b-8c98-84854560bdf4.png)
+##### Flow Chart of Daily prediction:
+![Flow Chart of Daily prediction](https://user-images.githubusercontent.com/64394655/146876382-242acca3-0712-4dde-bb75-666acfa520f4.png)
+## Future Scope and Conclusion
+* Model will aid users for solar Power forecasting at any particular
+location in making practical design decisions.
+* This forecasting approach is a key step towards the development of a
+data-driven decision-making framework for power system operation.
+* Similar study and conclusion can be drawn on large scale national
+solar grid and wind farms’ energy forecasting models.
 ## Contributors
 Web Application development - [Subramanya K](https://github.com/subramanyakrishna) ,[K Shivanithyanathan](https://github.com/shivanithyak)  
 Xgboost and GBR model building - [Roshan Nayak](https://github.com/RosNayak)  
 Dataset creation and Model Building - [Priyanshu M](https://github.com/priyanshu-m)  
 Forecasting - [Venkatesh Subramanya Iyer Giri](https://github.com/vendroid7)
+![image](https://user-images.githubusercontent.com/64394655/146876625-ea876c6b-f525-4259-9f9c-d0f4914e6e21.png)
+
