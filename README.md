@@ -2,7 +2,7 @@
 This repo contains codes for solarneergyprediction web application we created with colaboration with nokia
 You can access the website [here](https://solarenergyprediction.herokuapp.com/)
 (Website might lag sometimes since server will go to sleep after 30 min of inactivity)
-## Intro
+## Introduction
 * Solar energy is going to play a measure role in the future global
 energy supply. Due to the fluctuating nature of solar energy, an
 efficient use is possible depending on reliable forecast information.
