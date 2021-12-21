@@ -92,6 +92,79 @@ location in making practical design decisions.
 data-driven decision-making framework for power system operation.
 * Similar study and conclusion can be drawn on large scale national
 solar grid and wind farms’ energy forecasting models.
+
+## Folder Structure 
+```
+|   LICENSE
+|   README.md
+|
++---Dataset
+|       .~lock.hourly-dataset_commit24.xlsx#
+|       .~lock.hourly-dataset_final.xlsx#
+|       daily.csv
+|       hourly-dataset_final.xlsx
+|       hourly-dataset_without-night-hrs.xlsx
+|       README.md
+|
++---data_preprocessing
+|       cor_analysis.R
+|       daily-weather-dataset_chronological-order.xlsx
+|       solar-output_daily.csv
+|
++---Forecasting
+|       .gitkeep
+|       Solar_energy_forecasting.ipynb
+|
++---Model Building
+|       Basic_Neural_networks.ipynb
+|       Dim_Reduction_PCA.ipynb
+|       hourly-dataset_final.xlsx
+|       lightGBM MAE401.324971 R20.825761.pkl
+|       Multiple_Regression.ipynb
+|       Neural Networks.ipynb
+|       README.md
+|       Workspace.ipynb
+|       xgb MAE409.912384 R20.836636.pkl
+|
++---slides and report
+|       ML_Nokia_Final_report_Team5.pdf
+|       slide.pdf
+|
+\---webapplication
+    |   .gitignore
+    |   app.py
+    |   environment.yml
+    |   gbr1.pkl
+    |   mainpage.py
+    |   monthly.py
+    |   perday.py
+    |   Procfile
+    |   README.md
+    |   requirements.txt
+    |   utils.py
+    |   xgb_r_sklearn.txt
+    |
+    +---forecastFastApi
+    |       forecasting_model
+    |       main.py
+    |       Procfile
+    |       requirements.txt
+    |
+    +---static
+    |   |   world.png
+    |   |
+    |   +---javascript
+    |   |       index.js
+    |   |
+    |   \---stylesheets
+    |           index.css
+    |           perday.css
+    |
+    \---templates
+            index.html
+            perday.html
+
+```
 ## Contributors
 Web Application development - [Subramanya K](https://github.com/subramanyakrishna) ,[K Shivanithyanathan](https://github.com/shivanithyak)  
 Xgboost and GBR model building - [Roshan Nayak](https://github.com/RosNayak)  
@@ -100,4 +173,3 @@ Forecasting - [Venkatesh Subramanya Iyer Giri](https://github.com/vendroid7)
 Other - [Tanay Somnani](https://github.com/TanSom),[K S Eshwar Subramanya Prasad](https://github.com/EshSubP)
 
 ![image](https://user-images.githubusercontent.com/64394655/146876625-ea876c6b-f525-4259-9f9c-d0f4914e6e21.png)
-
