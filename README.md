@@ -167,7 +167,7 @@ solar grid and wind farms’ energy forecasting models.
 ```
 ## Contributors
 Web Application development - [Subramanya K](https://github.com/subramanyakrishna) ,[K Shivanithyanathan](https://github.com/shivanithyak)  
-Xgboost and GBR model building - [Roshan Nayak](https://github.com/RosNayak)  
+Xgboost, GBR models, and Stacking (Ensembling technique) - [Roshan Nayak](https://github.com/RosNayak)  
 Dataset creation and Model Building - [Priyanshu M](https://github.com/priyanshu-m)  
 Forecasting - [Venkatesh Subramanya Iyer Giri](https://github.com/vendroid7)  
 Other - [Tanay Somnani](https://github.com/TanSom),[K S Eshwar Subramanya Prasad](https://github.com/EshSubP)
