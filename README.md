@@ -143,7 +143,23 @@ output:
 }
 
 ```
-result?lat=12.3829&long=77.2381&endDate=2022-01-15
+```
+forCastedValueInFloat=[14755.659,14211.258,16711.766,13998.961,14627.025,13725.157,8885.549,9977.241,13007.436,26255.236]
+ fetch('https://fastapiforecast.herokuapp.com/getForecast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'tenDaysOutputs': forCastedValueInFloat
+        })
+      }).then(data => cosole.log(data.json()))
+      
+```
+```
+output :
+{"next3DaysOutput":[13032.21,14381.95,14743.67]}
+```
 ## Application Development
 * We developed a web application to help the user to utilize our
 machine learning model and predict the total solar energy generation
