@@ -61,6 +61,43 @@ data which can be helpful.
 solar energy values.
 * We use LSTM i.e., Long short term memory. It is a type of RNN but
 it solves many drawbacks which RNN has.
+## API endpoints:
+```
+import requests
+baseUrl = 'https://solarenergyprediction.herokuapp.com/'
+lat = 12.3829
+long = 77.2381
+endDate='2022-01-15' #The solar output on this data and 30 days of this date will be calculated
+output = requests.request('GET',f'https://solarenergyprediction.herokuapp.com/result?lat={lat}&long={long}&endDate={endDate}').json()
+```
+```
+output:
+{
+  "averageSolarEnergyPerHour": "2209.15 kWh",
+  "city_name": "Malavalli",
+  "co2": "408.69  kg",
+  "co2NoOfTree": 19,
+  "costsavings": "\u20b9 12658.43 per hour",
+  "currTimeprediction": "3441.57 kWh",
+  "endDate": "Sat, 15 Jan 2022 00:00:00 GMT",
+  "lat": 12.3829,
+  "long": 77.2381,
+  "solarOutputPerDay": "26509.8  kWh",
+  "solarOutputPerhours": [
+    0, 0, 0, 0, 0, 0, 276.75130233391724, 469.44954487599443,
+    1527.5418123324287, 2148.199140239004, 2675.2511142428234,
+    2855.571983795413, 3240.406316005161, 3211.5681006923755,
+    3196.7770615502172, 3033.4511481493782, 2371.3516480803573,
+    1503.4792105903468, 0, 0, 0, 0, 0, 0
+  ],
+  "time": [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23
+  ]
+}
+
+```
+result?lat=12.3829&long=77.2381&endDate=2022-01-15
 ## Application Development
 * We developed a web application to help the user to utilize our
 machine learning model and predict the total solar energy generation
